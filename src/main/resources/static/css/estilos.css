@@ -1,0 +1,60 @@
+
+:root {
+    --morado-primario: #6c4fb0;
+    --morado-oscuro: #42307a;
+    --azul-acento: #4361ee;
+    --azul-claro: #e8ecfb;
+    --texto-claro: #f5f3fa;
+}
+
+body {
+    background-color: #f7f6fb;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+}
+
+.navbar-suculentas {
+    background: linear-gradient(90deg, var(--morado-primario), var(--azul-acento));
+}
+
+.footer-suculentas {
+    background-color: var(--morado-oscuro);
+}
+
+.card-header-suculenta {
+    background-color: var(--morado-primario);
+    color: var(--texto-claro);
+}
+
+.btn-suculenta-primario {
+    background-color: var(--morado-primario);
+    border-color: var(--morado-primario);
+    color: var(--texto-claro);
+}
+
+.btn-suculenta-primario:hover {
+    background-color: var(--morado-oscuro);
+    border-color: var(--morado-oscuro);
+    color: var(--texto-claro);
+}
+
+.btn-suculenta-editar {
+    background-color: var(--azul-acento);
+    border-color: var(--azul-acento);
+    color: var(--texto-claro);
+}
+
+.btn-suculenta-editar:hover {
+    background-color: #2d47c4;
+    border-color: #2d47c4;
+    color: var(--texto-claro);
+}
+
+.alert-suculenta-exito {
+    background-color: var(--azul-claro);
+    border: 1px solid var(--azul-acento);
+    color: var(--morado-oscuro);
+}
+
+.badge-suculenta {
+    background-color: var(--azul-acento) !important;
+}

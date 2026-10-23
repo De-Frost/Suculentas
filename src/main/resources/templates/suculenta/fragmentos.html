@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<section th:fragment="formulario" class="container pt-4">
+    <button type="button" class="btn btn-suculenta-primario" data-bs-toggle="modal" data-bs-target="#suculentaModal"
+            onclick="prepararAgregar()">
+        + Nueva Suculenta
+    </button>
+
+    <div class="modal fade" id="suculentaModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="suculentaForm" method="post" th:action="@{/suculenta/guardar}">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="suculentaModalTitulo">Nueva Suculenta</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" id="idSuculenta" name="idSuculenta"/>
+                        <div class="mb-3">
+                            <label for="nombreComun" class="form-label">Nombre Comun</label>
+                            <input type="text" id="nombreComun" name="nombreComun" maxlength="50" class="form-control" required/>
+                        </div>
+                        <div class="mb-3">
+                            <label for="nombreCientifico" class="form-label">Nombre Cientifico</label>
+                            <input type="text" id="nombreCientifico" name="nombreCientifico" maxlength="80" class="form-control" required/>
+                        </div>
+                        <div class="mb-3">
+                            <label for="familia" class="form-label">Familia</label>
+                            <input type="text" id="familia" name="familia" maxlength="50" class="form-control" required/>
+                        </div>
+                        <div class="mb-3">
+                            <label for="colorPrincipal" class="form-label">Color Principal</label>
+                            <input type="text" id="colorPrincipal" name="colorPrincipal" maxlength="30" class="form-control" required/>
+                        </div>
+                        <div class="mb-3">
+                            <label for="alturaCm" class="form-label">Altura (cm)</label>
+                            <input type="number" id="alturaCm" name="alturaCm" min="0" step="0.01" class="form-control" required/>
+                        </div>
+                        <div class="mb-3">
+                            <label for="precioEstimado" class="form-label">Precio Estimado</label>
+                            <input type="number" id="precioEstimado" name="precioEstimado" min="0" step="0.01" class="form-control" required/>
+                        </div>
+                        <div class="mb-3">
+                            <label for="nivelRiego" class="form-label">Nivel de Riego</label>
+                            <select id="nivelRiego" name="nivelRiego" class="form-select" required>
+                                <option value="Bajo">Bajo</option>
+                                <option value="Medio">Medio</option>
+                                <option value="Alto">Alto</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="rutaImagen" class="form-label">Imagen (URL)</label>
+                            <input type="url" id="rutaImagen" name="rutaImagen" maxlength="500" class="form-control" placeholder="https://..." required/>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="submit" id="suculentaBotonGuardar" class="btn btn-suculenta-primario">Agregar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section th:fragment="listado" class="container py-4">
+    <div class="card">
+        <div class="card-header card-header-suculenta d-flex justify-content-between align-items-center">
+            <h4 class="mb-0">Coleccion de Suculentas</h4>
+            <span class="badge badge-suculenta fs-6">Total: [[${totalSuculentas}]]</span>
+        </div>
+        <div class="card-body">
+            <div th:if="${suculentas != null and !suculentas.empty}">
+                <table class="table table-striped table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Imagen</th>
+                            <th>Nombre Comun</th>
+                            <th>Nombre Cientifico</th>
+                            <th>Familia</th>
+                            <th>Color</th>
+                            <th>Altura</th>
+                            <th>Precio</th>
+                            <th>Riego</th>
+                            <th>Opciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="s : ${suculentas}">
+                            <td>[[${s.idSuculenta}]]</td>
+                            <td>
+                                <img th:if="${s.rutaImagen != null}" th:src="${s.rutaImagen}"
+                                     alt="Imagen de suculenta" height="60"/>
+                            </td>
+                            <td>[[${s.nombreComun}]]</td>
+                            <td><em>[[${s.nombreCientifico}]]</em></td>
+                            <td>[[${s.familia}]]</td>
+                            <td>[[${s.colorPrincipal}]]</td>
+                            <td class="text-end">[[${s.alturaCm}]]</td>
+                            <td class="text-end">[[${#numbers.formatCurrency(s.precioEstimado)}]]</td>
+                            <td>[[${s.nivelRiego}]]</td>
+                            <td>
+                                <button type="button" class="btn btn-suculenta-editar btn-sm"
+                                        data-bs-toggle="modal" data-bs-target="#suculentaModal"
+                                        onclick="prepararEditar(this)"
+                                        th:data-id="${s.idSuculenta}"
+                                        th:data-nombre-comun="${s.nombreComun}"
+                                        th:data-nombre-cientifico="${s.nombreCientifico}"
+                                        th:data-familia="${s.familia}"
+                                        th:data-color-principal="${s.colorPrincipal}"
+                                        th:data-altura-cm="${s.alturaCm}"
+                                        th:data-precio-estimado="${s.precioEstimado}"
+                                        th:data-nivel-riego="${s.nivelRiego}"
+                                        th:data-ruta-imagen="${s.rutaImagen != null ? s.rutaImagen : ''}">
+                                    Editar
+                                </button>
+                                <button type="button" class="btn btn-danger btn-sm"
+                                        data-bs-toggle="modal" data-bs-target="#eliminarModal"
+                                        onclick="prepararEliminar(this)"
+                                        th:data-id="${s.idSuculenta}"
+                                        th:data-nombre-comun="${s.nombreComun}">
+                                    Eliminar
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="text-center p-3" th:if="${suculentas == null or suculentas.empty}">
+                <span>Tu coleccion esta vacia</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section th:fragment="confirmarEliminar">
+    <div class="modal fade" id="eliminarModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form method="post" th:action="@{/suculenta/eliminar}">
+                    <div class="modal-header bg-danger text-white">
+                        <h5 class="modal-title">Eliminar Suculenta</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" id="eliminarIdSuculenta" name="idSuculenta"/>
+                        <p>¿Seguro que quieres quitar <span id="eliminarNombre" class="fw-bold"></span> de tu coleccion?</p>
+                        <p class="text-muted mb-0">Esta accion no se puede deshacer</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-danger">Eliminar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+</body>
+</html>

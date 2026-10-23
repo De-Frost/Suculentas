@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head">
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Bienvenido - Menu de Suculentas</title>
+    <link th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link th:href="@{/css/estilos.css}" rel="stylesheet"/>
+</head>
+<body>
+
+<header th:fragment="header">
+    <nav class="navbar navbar-dark navbar-suculentas">
+        <div class="container">
+            <a class="navbar-brand" th:href="@{/suculenta/listado}">Menu de Suculentas</a>
+            <ul class="navbar-nav flex-row">
+                <li class="nav-item">
+                    <a class="nav-link text-white" th:href="@{/suculenta/listado}">Pagina Principal</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>
+
+<section th:fragment="mostrarMensajes">
+    <div class="container mt-3">
+        <div th:if="${todoOk}" class="alert alert-suculenta-exito alert-dismissible fade show" role="alert">
+            [[${todoOk}]]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+            [[${error}]]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    </div>
+</section>
+
+<footer th:fragment="footer" class="footer-suculentas text-white text-center p-3 mt-5">
+    <p class="mb-0">Practica #1 - Erick Flores Muñoz &copy; SC-403</p>
+</footer>
+
+<script th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}" th:fragment="scripts"></script>
+
+</body>
+</html>
